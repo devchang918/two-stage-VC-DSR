@@ -4,7 +4,7 @@
 
 Dysarthria, a speech disorder that hinders speech production, can cause difficulties in daily communication for patients. To assist dysarthric patients, voice conversion (VC) methods for dysarthric speech reconstruction (DSR) have been implemented to improve the intelligibility of dysarthric speech. Despite the success of various VC methods, the identity of the dysarthric speaker is often lost during conversion. In this study, we proposed a two-stage VC framework. For Stage 1, we evaluated the ability of a sequence-to-sequence Voice Transformer Network (VTN) and a locally linear embedding (LLE)-based VC model to enhance speech intelligibility by converting dysarthric speech to four normal reference speakers. We tested the LLE conversion with different types of content features (Chinese-HuBERT, WavLM, and Whisper). For Stage 2, we investigated four state-of-the-art models for restoring speaker identity (Seed-VC, FreeVC, SPARC, and MKL-VC) and compared them with a previously tested vector-quantized variational autoencoder (VQ-VAE) baseline model. Our evaluation found that the VTN and LLE models using Chinese-HuBERT as content features achieved the most significant improvements in intelligibility. Furthermore, Seed-VC considerably outperformed the other state-of-the-art models and the baseline in preserving speaker similarity without sacrificing intelligibility, especially when applied to VTN results.
 
-## Model
+## VC Approaches
 
 * LLE[^first]: Locally Linear Embedding with content features extracted from the last layer of one of the models below:
     - WavLM Large (WL)
@@ -16,6 +16,7 @@ Dysarthria, a speech disorder that hinders speech production, can cause difficul
 * SPARC[^fifth]: Speech articulatory coding model
 * MKL-VC[^sixth]: a training-free modified version of kNN-VC that utilizes factorized optimal transport map obtained from Monge-Kantorovich Linear (MKL) solution instead of kNN regression
 * VQ-VAE (crank[^seventh]): a non-parallel frame-wise VC model based on vector-quantized variational autoencoder in the crank toolkit
+* VTN+VQVAE: the baseline used in our experiment, which is based on previous two-stage DSR experiment[^eighth]
 * DY01: dysarthric speaker id
 * SPXX: TMSV speakers id (Male: SP04, SP09; Female: SP07, SP13)
 
@@ -41,7 +42,7 @@ For speaker similarity:
 * similarity: cosine similarity between the converted and reference utterances, calculated with a resemblyzer in the metrics tool in the Amphion toolkit
 
 
-### Table 1: Evaluation of Stage 1 DSR results for VTN, LLE with different content features(WL, CH, WH) , and second-stage VC models.
+### Table 1: Evaluation of Stage 1 DSR results for VTN, LLE with different content features(WL, CH, WH) , and second-stage VC methods.
 
 ![table_1](figures/table_1.png)
 
@@ -162,6 +163,8 @@ For speaker similarity:
 [^fifth]: SPARC GitHub: https://github.com/Berkeley-Speech-Group/Speech-Articulatory-Coding
 [^sixth]: MKL-VC GitHub: https://github.com/alobashev/mkl-vc
 [^seventh]: Crank GitHub: https://github.com/k2kobayashi/crank
-
+[^eighth]: Huang, W.C., Kobayashi, K., Peng, Y.H., Liu, C.F., Tsao, Y., Wang, H.m., Toda,
+T.: A preliminary study of a two-stage paradigm for preserving speaker identity in
+dysarthric voice conversion. In: Proc. ICASSP. pp. 1329–1333 (2021)
 
 
