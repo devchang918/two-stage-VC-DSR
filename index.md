@@ -10,7 +10,7 @@ Dysarthria, a speech disorder that hinders speech production, can cause difficul
     - WavLM Large (WL)
     - Chinese-HuBERT Large (CH)
     - Whisper Large V3 (WH)
-* VTN[^second]: : a sequence-to-sequence (seq2seq) model with text-to-speech (TTS) model trained on Sinica-COSPRO dataset and Voice Transformer Network (VTN) based on ESPnet
+* VTN: : a sequence-to-sequence (seq2seq) model[^second] with text-to-speech (TTS) model trained on Sinica-COSPRO dataset and Voice Transformer Network (VTN) based on ESPnet
 * Seed-VC[^third]: : Seed-VC v1, a zero-shot VC diffusion network 
 * FreeVC[^fourth]: High-quality text-free one-shot VC model
 * SPARC[^fifth]: Speech articulatory coding model
