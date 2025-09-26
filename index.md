@@ -6,19 +6,22 @@ Dysarthria, a speech disorder that hinders speech production, can cause difficul
 
 ## Model
 
-* LLE: Locally Linear Embedding with content features extracted from the last layer of one of the models below:
+* LLE[^first]: Locally Linear Embedding with content features extracted from the last layer of one of the models below:
     - WavLM Large (WL)
     - Chinese-HuBERT Large (CH)
     - Whisper Large V3 (WH)
-* VTN: a sequence-to-sequence (seq2seq) model with text-to-speech (TTS) model trained on Sinica-COSPRO dataset and Voice Transformer Network (VTN) based on ESPnet
-* Seed-VC: Seed-VC v1, a zero-shot VC diffusion network 
-* FreeVC: High-quality text-free one-shot VC model
-* SPARC: Speech articulatory coding model
-* MKL-VC: a training-free modified version of kNN-VC that utilizes factorized optimal transport map obtained from Monge-Kantorovich Linear (MKL) solution instead of kNN regression
-* VQ-VAE: a non-parallel frame-wise VC model based on vector-quantized variational autoencoder in the crank toolkit
+* VTN[^second]: : a sequence-to-sequence (seq2seq) model with text-to-speech (TTS) model trained on Sinica-COSPRO dataset and Voice Transformer Network (VTN) based on ESPnet
+* Seed-VC[^third]: : Seed-VC v1, a zero-shot VC diffusion network 
+* FreeVC[^fourth]: High-quality text-free one-shot VC model
+* SPARC[^fifth]: Speech articulatory coding model
+* MKL-VC[^sixth]: a training-free modified version of kNN-VC that utilizes factorized optimal transport map obtained from Monge-Kantorovich Linear (MKL) solution instead of kNN regression
+* VQ-VAE (crank[^seventh]): a non-parallel frame-wise VC model based on vector-quantized variational autoencoder in the crank toolkit
 * DY01: dysarthric speaker id
 * SPXX: TMSV speakers id (Male: SP04, SP09; Female: SP07, SP13)
 
+## Illustration of the implemented two-stage VC method for DSR
+
+![flowchart](figures/flowchart.png)
 
 ## Objective evaluation
 
@@ -38,78 +41,84 @@ For speaker similarity:
 * similarity: cosine similarity between the converted and reference utterances, calculated with a resemblyzer in the metrics tool in the Amphion toolkit
 
 
-### Table 1: 
+### Table 1: Evaluation of Stage 1 DSR results for VTN, LLE with different content features(WL, CH, WH) , and second-stage VC models.
 
 ![table_1](figures/table_1.png)
 
-### Table 2: 
+### Table 2: Evaluation of two-stage VC for DSR with different Stage 2 frame-wise VC models.
 
 ![table_2](figures/table_2.png)
 
+
 ## Audio samples
 
-### Stage 1 
-
-**sample 1**
+### Stage 1: DSR 
 
 * source speech: speech from DY01
 * target speech: speech from SP04, SP09, SP07, SP13
+* For the tables below, the rows are the systems implemented, and the columns are the target speakers used for conversion.
+
+**sample 1**
+
 * transcription: 他捐了很多衣物給災區 (ta juan le hen duo yi wu gei zai qu)
 
 |   System  |        SP04        |        SP09         |        SP07         |        SP13         |
 |:---------:|:------------------:|:-------------------:|:-------------------:|:-------------------:|
 | Before VC | <audio src="audio/DY01/DY01_281.wav" controls preload></audio> | <audio src="audio/DY01/DY01_281.wav" controls preload></audio> | <audio src="audio/DY01/DY01_281.wav" controls preload></audio> | <audio src="audio/DY01/DY01_281.wav" controls preload></audio> |
 | Target speech | <audio src="audio/SP04/SP04_281.wav" controls preload></audio> | <audio src="audio/SP09/SP09_281.wav" controls preload></audio> | <audio src="audio/SP07/SP07_281.wav" controls preload></audio> | <audio src="audio/SP13/SP13_281.wav" controls preload></audio> |
-|:---------:|:------------------:|:-------------------:|:-------------------:|:-------------------:|
+|===========|====================|====================|====================|====================|
 |  Seed-VC  | <audio src="audio/lab2-1-0_seedvc_DY01-SP04/lab2-1-0_seedvc_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP09/lab2-1-0_seedvc_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP07/lab2-1-0_seedvc_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP13/lab2-1-0_seedvc_DY01-SP13_281.wav" controls preload></audio> |
 |  FreeVC   | <audio src="audio/lab2-1-0_freevc_DY01-SP04/lab2-1-0_freevc_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_freevc_DY01-SP09/lab2-1-0_freevc_DY01-SP09_281.wav" controls preload></audio> |<audio src="audio/lab2-1-0_freevc_DY01-SP07/lab2-1-0_freevc_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_freevc_DY01-SP13/lab2-1-0_freevc_DY01-SP13_281.wav" controls preload></audio> |
 |  SPARC    | <audio src="audio/lab2-1-0_sparc_DY01-SP04/lab2-1-0_sparc_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP09/lab2-1-0_sparc_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP07/lab2-1-0_sparc_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP13/lab2-1-0_sparc_DY01-SP13_281.wav" controls preload></audio> |
 |  MKL-VC   | <audio src="audio/lab2-1-0_mklvc_DY01-SP04/lab2-1-0_mklvc_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP09/lab2-1-0_mklvc_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP07/lab2-1-0_mklvc_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP13/lab2-1-0_mklvc_DY01-SP13_281.wav" controls preload></audio> |
 |  VQ-VAE   | <audio src="audio/lab2-1-0_vqvae_DY01-SP04/lab2-1-0_vqvae_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP09/lab2-1-0_vqvae_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP07/lab2-1-0_vqvae_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP13/lab2-1-0_vqvae_DY01-SP13_281.wav" controls preload></audio> |
-|:---------:|:------------------:|:-------------------:|:-------------------:|:-------------------:|
+|===========|====================|====================|====================|====================|
 |  VTN      | <audio src="audio/lab1-2_VTN_DY01-SP04/lab1-2_VTN_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP09/lab1-2_VTN_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP07/lab1-2_VTN_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP13/lab1-2_VTN_DY01-SP13_281.wav" controls preload></audio> |
-|:---------:|:------------------:|:-------------------:|:-------------------:|:-------------------:|
+|===========|====================|====================|====================|====================|
 |  LLE-WL   | <audio src="audio/lab1-1_wavlm_DY01-SP04/lab1-1_wavlm_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP09/lab1-1_wavlm_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP07/lab1-1_wavlm_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP13/lab1-1_wavlm_DY01-SP13_281.wav" controls preload></audio> |
-|  LLW-CH   | <audio src="audio/lab1-1_cnhu_DY01-SP04/lab1-1_cnhu_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP09/lab1-1_cnhu_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP07/lab1-1_cnhu_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP13/lab1-1_cnhu_DY01-SP13_281.wav" controls preload></audio> |
+|  LLE-CH   | <audio src="audio/lab1-1_cnhu_DY01-SP04/lab1-1_cnhu_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP09/lab1-1_cnhu_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP07/lab1-1_cnhu_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP13/lab1-1_cnhu_DY01-SP13_281.wav" controls preload></audio> |
 |  LLE-WH   | <audio src="audio/lab1-1_whisper_DY01-SP04/lab1-1_whisper_DY01-SP04_281.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP09/lab1-1_whisper_DY01-SP09_281.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP07/lab1-1_whisper_DY01-SP07_281.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP13/lab1-1_whisper_DY01-SP13_281.wav" controls preload></audio> |
 
 **sample 2**
 
-|   Model   |transcription: 我把不用的家具送人了 (wo ba bu yong de jia ju song ren le)|
-|:---------:|:-------------------------------------------------------------------:|
-| EL speech | <audio src="audio/el01/EL01_284.wav" controls preload></audio> |
-| MT-CLDNN  | <audio src="audio/el01_nl01/mtcldnn/EL01-NL01_MTCLDNN_h5_GV_no0th_284.wav" controls preload></audio> |
-|    TFS    | <audio src="audio/el01_nl01/tfs/EL01-NL01_TFS_284.wav" controls preload></audio> |
-|    PT     | <audio src="audio/el01_nl01/pt/EL01-NL01_PT_284.wav" controls preload></audio> |
-| NL speech | <audio src="audio/nl01/NL01_284.wav" controls preload></audio> |
+* transcription: 電視報導那裡發生地震 (dian shi bao dao na li fa sheng di zhen)
 
-**sample 3**
+|   System  |      SP04     |        SP09    |    SP07       |      SP13     |
+|:---------:|:------------------:|:------------------:|:------------------:|:------------------:|
+| Before VC | <audio src="audio/DY01/DY01_282.wav" controls preload></audio> | <audio src="audio/DY01/DY01_282.wav" controls preload></audio> | <audio src="audio/DY01/DY01_282.wav" controls preload></audio> | <audio src="audio/DY01/DY01_282.wav" controls preload></audio> |
+| Target speech | <audio src="audio/SP04/SP04_282.wav" controls preload></audio> | <audio src="audio/SP09/SP09_282.wav" controls preload></audio> | <audio src="audio/SP07/SP07_282.wav" controls preload></audio> | <audio src="audio/SP13/SP13_282.wav" controls preload></audio> |
+|===========|====================|====================|====================|====================|
+|  Seed-VC  | <audio src="audio/lab2-1-0_seedvc_DY01-SP04/lab2-1-0_seedvc_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP09/lab2-1-0_seedvc_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP07/lab2-1-0_seedvc_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_seedvc_DY01-SP13/lab2-1-0_seedvc_DY01-SP13_282.wav" controls preload></audio> |
+|  FreeVC   | <audio src="audio/lab2-1-0_freevc_DY01-SP04/lab2-1-0_freevc_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_freevc_DY01-SP09/lab2-1-0_freevc_DY01-SP09_282.wav" controls preload></audio> |<audio src="audio/lab2-1-0_freevc_DY01-SP07/lab2-1-0_freevc_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_freevc_DY01-SP13/lab2-1-0_freevc_DY01-SP13_282.wav" controls preload></audio> |
+|  SPARC    | <audio src="audio/lab2-1-0_sparc_DY01-SP04/lab2-1-0_sparc_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP09/lab2-1-0_sparc_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP07/lab2-1-0_sparc_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_sparc_DY01-SP13/lab2-1-0_sparc_DY01-SP13_282.wav" controls preload></audio> |
+|  MKL-VC   | <audio src="audio/lab2-1-0_mklvc_DY01-SP04/lab2-1-0_mklvc_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP09/lab2-1-0_mklvc_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP07/lab2-1-0_mklvc_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_mklvc_DY01-SP13/lab2-1-0_mklvc_DY01-SP13_282.wav" controls preload></audio> |
+|  VQ-VAE   | <audio src="audio/lab2-1-0_vqvae_DY01-SP04/lab2-1-0_vqvae_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP09/lab2-1-0_vqvae_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP07/lab2-1-0_vqvae_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab2-1-0_vqvae_DY01-SP13/lab2-1-0_vqvae_DY01-SP13_282.wav" controls preload></audio> |
+|===========|====================|====================|====================|====================|
+|  VTN      | <audio src="audio/lab1-2_VTN_DY01-SP04/lab1-2_VTN_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP09/lab1-2_VTN_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP07/lab1-2_VTN_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab1-2_VTN_DY01-SP13/lab1-2_VTN_DY01-SP13_282.wav" controls preload></audio> |
+|===========|====================|====================|====================|====================|
+|  LLE-WL   | <audio src="audio/lab1-1_wavlm_DY01-SP04/lab1-1_wavlm_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP09/lab1-1_wavlm_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP07/lab1-1_wavlm_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab1-1_wavlm_DY01-SP13/lab1-1_wavlm_DY01-SP13_282.wav" controls preload></audio> |
+|  LLE-CH   | <audio src="audio/lab1-1_cnhu_DY01-SP04/lab1-1_cnhu_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP09/lab1-1_cnhu_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP07/lab1-1_cnhu_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab1-1_cnhu_DY01-SP13/lab1-1_cnhu_DY01-SP13_282.wav" controls preload></audio> |
+|  LLE-WH   | <audio src="audio/lab1-1_whisper_DY01-SP04/lab1-1_whisper_DY01-SP04_282.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP09/lab1-1_whisper_DY01-SP09_282.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP07/lab1-1_whisper_DY01-SP07_282.wav" controls preload></audio> | <audio src="audio/lab1-1_whisper_DY01-SP13/lab1-1_whisper_DY01-SP13_282.wav" controls preload></audio> |
 
-|   Model   | transcription: 那個牆上掛著一幅油畫 (na ge qiang shang gua zhu yi fu you hua)|
-|:---------:|:-------------------------------------------------------------------:|
-| EL speech | <audio src="audio/el01/EL01_287.wav" controls preload></audio> |
-| MT-CLDNN  | <audio src="audio/el01_nl01/mtcldnn/EL01-NL01_MTCLDNN_h5_GV_no0th_287.wav" controls preload></audio> |
-|    TFS    | <audio src="audio/el01_nl01/tfs/EL01-NL01_TFS_287.wav" controls preload></audio> |
-|    PT     | <audio src="audio/el01_nl01/pt/EL01-NL01_PT_287.wav" controls preload></audio> |
-| NL speech | <audio src="audio/nl01/NL01_287.wav" controls preload></audio> |
 
-
-### Stage 2
-
-**sample 1**
+### Stage 2: Speaker similarity perservation with frame-wise VC models
 
 * source speech: VTN-converted and LLE-converted speech from Stage 1
 * target speech: speech from DY01
+* For the tables below, the rows are the Stage 1/Stage 2 models used, and the columns are the source-target speaker pairs in Stage 1 conversion for which the converted results were used as source speech in Stage 2. 
+
+**sample 1**
+
 * transcription: 他捐了很多衣物給災區 (ta juan le hen duo yi wu gei zai qu)
 
-| Stage 1 Model  |   Stage 2 Model   |    SP04    |    SP09    |    SP07    |    SP13    |
-|:-----------------:|:---------------------------------------:|:---------------------------------------:|
+| Stage 1 Model  |   Stage 2 Model   | DY01-SP04  |    DY01-SP09   |    DY01-SP07     |    DY01-SP13   |
+|:--------------:|:-----------------:|:----------:|:----------:|:----------:|:----------:|
 |VTN|  Seed-VC  | <audio src="audio/lab2-2-1_seedvc_DY01-SP04-DY01/lab2-2-1_seedvc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP09-DY01/lab2-2-1_seedvc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP07-DY01/lab2-2-1_seedvc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP13-DY01/lab2-2-1_seedvc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |VTN|  FreeVC   | <audio src="audio/lab2-2-1_freevc_DY01-SP04-DY01/lab2-2-1_freevc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP09-DY01/lab2-2-1_freevc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP07-DY01/lab2-2-1_freevc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP13-DY01/lab2-2-1_freevc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |VTN|  SPARC    |  <audio src="audio/lab2-2-1_sparc_DY01-SP04-DY01/lab2-2-1_sparc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP09-DY01/lab2-2-1_sparc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP07-DY01/lab2-2-1_sparc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP13-DY01/lab2-2-1_sparc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |VTN|  MKL-VC   |  <audio src="audio/lab2-2-1_mklvc_DY01-SP04-DY01/lab2-2-1_mklvc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP09-DY01/lab2-2-1_mklvc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP07-DY01/lab2-2-1_mklvc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP13-DY01/lab2-2-1_mklvc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |VTN|  VQ-VAE   |  <audio src="audio/lab2-2-1_vqvae_DY01-SP04-DY01/lab2-2-1_vqvae_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP09-DY01/lab2-2-1_vqvae_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP07-DY01/lab2-2-1_vqvae_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP13-DY01/lab2-2-1_vqvae_DY01-SP13-DY01_281.wav" controls preload></audio> |
-|:---:|:---------:|:---------------------------------------:|:---------------------------------------:|
+|================|===================|============|============|============|============|
 |LLE|  Seed-VC  | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP04-DY01/lab2-1-1_cnhu_seedvc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP09-DY01/lab2-1-1_cnhu_seedvc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP07-DY01/lab2-1-1_cnhu_seedvc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP13-DY01/lab2-1-1_cnhu_seedvc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |LLE|  FreeVC   | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP04-DY01/lab2-1-2_cnhu_freevc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP09-DY01/lab2-1-2_cnhu_freevc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP07-DY01/lab2-1-2_cnhu_freevc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP13-DY01/lab2-1-2_cnhu_freevc_DY01-SP13-DY01_281.wav" controls preload></audio> |
 |LLE|  SPARC    | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP04-DY01/lab2-1-3_cnhu_sparc_DY01-SP04-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP09-DY01/lab2-1-3_cnhu_sparc_DY01-SP09-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP07-DY01/lab2-1-3_cnhu_sparc_DY01-SP07-DY01_281.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP13-DY01/lab2-1-3_cnhu_sparc_DY01-SP13-DY01_281.wav" controls preload></audio> |
@@ -118,26 +127,41 @@ For speaker similarity:
 
 **sample 2**
 
-|   Model   |transcription: 我幫他把雞蛋放入冰箱 (wo bang ta ba ji dan fang ru bing xiang)|
-|:---------:|:-------------------------------------------------------------------:|
-| EL speech | <audio src="audio/el01/EL01_285.wav" controls preload></audio> |
-| MT-CLDNN  | <audio src="audio/el01_nl02/mtcldnn/EL01-NL02_MTCLDNN_h5_GV_no0th_285.wav" controls preload></audio> |
-|    TFS    | <audio src="audio/el01_nl02/tfs/EL01-NL02_TFS_285.wav" controls preload></audio> |
-|    PT     | <audio src="audio/el01_nl02/pt/EL01-NL02_PT_285.wav" controls preload></audio> |
-| NL speech | <audio src="audio/nl02/NL02_285.wav" controls preload></audio> |
+* transcription: 電視報導那裡發生地震 (dian shi bao dao na li fa sheng di zhen)
 
-**sample 3**
+| Stage 1 Model  |   Stage 2 Model   | DY01-SP04  |    DY01-SP09   |    DY01-SP07     |    DY01-SP13   |
+|:--------------:|:-----------------:|:----------:|:----------:|:----------:|:----------:|
+|VTN|  Seed-VC  | <audio src="audio/lab2-2-1_seedvc_DY01-SP04-DY01/lab2-2-1_seedvc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP09-DY01/lab2-2-1_seedvc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP07-DY01/lab2-2-1_seedvc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_seedvc_DY01-SP13-DY01/lab2-2-1_seedvc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|VTN|  FreeVC   | <audio src="audio/lab2-2-1_freevc_DY01-SP04-DY01/lab2-2-1_freevc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP09-DY01/lab2-2-1_freevc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP07-DY01/lab2-2-1_freevc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_freevc_DY01-SP13-DY01/lab2-2-1_freevc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|VTN|  SPARC    |  <audio src="audio/lab2-2-1_sparc_DY01-SP04-DY01/lab2-2-1_sparc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP09-DY01/lab2-2-1_sparc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP07-DY01/lab2-2-1_sparc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_sparc_DY01-SP13-DY01/lab2-2-1_sparc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|VTN|  MKL-VC   |  <audio src="audio/lab2-2-1_mklvc_DY01-SP04-DY01/lab2-2-1_mklvc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP09-DY01/lab2-2-1_mklvc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP07-DY01/lab2-2-1_mklvc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_mklvc_DY01-SP13-DY01/lab2-2-1_mklvc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|VTN|  VQ-VAE   |  <audio src="audio/lab2-2-1_vqvae_DY01-SP04-DY01/lab2-2-1_vqvae_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP09-DY01/lab2-2-1_vqvae_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP07-DY01/lab2-2-1_vqvae_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-2-1_vqvae_DY01-SP13-DY01/lab2-2-1_vqvae_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|================|===================|============|============|============|============|
+|LLE|  Seed-VC  | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP04-DY01/lab2-1-1_cnhu_seedvc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP09-DY01/lab2-1-1_cnhu_seedvc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP07-DY01/lab2-1-1_cnhu_seedvc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-1_cnhu_seedvc_DY01-SP13-DY01/lab2-1-1_cnhu_seedvc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|LLE|  FreeVC   | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP04-DY01/lab2-1-2_cnhu_freevc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP09-DY01/lab2-1-2_cnhu_freevc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP07-DY01/lab2-1-2_cnhu_freevc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-2_cnhu_freevc_DY01-SP13-DY01/lab2-1-2_cnhu_freevc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|LLE|  SPARC    | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP04-DY01/lab2-1-3_cnhu_sparc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP09-DY01/lab2-1-3_cnhu_sparc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP07-DY01/lab2-1-3_cnhu_sparc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-3_cnhu_sparc_DY01-SP13-DY01/lab2-1-3_cnhu_sparc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|LLE|  MKL-VC   | <audio src="audio/lab2-1-4_cnhu_mklvc_DY01-SP04-DY01/lab2-1-4_cnhu_mklvc_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-4_cnhu_mklvc_DY01-SP09-DY01/lab2-1-4_cnhu_mklvc_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-4_cnhu_mklvc_DY01-SP07-DY01/lab2-1-4_cnhu_mklvc_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-4_cnhu_mklvc_DY01-SP13-DY01/lab2-1-4_cnhu_mklvc_DY01-SP13-DY01_282.wav" controls preload></audio> |
+|LLE|  VQ-VAE   | <audio src="audio/lab2-1-5_cnhu_vqvae_DY01-SP04-DY01/lab2-1-5_cnhu_vqvae_DY01-SP04-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-5_cnhu_vqvae_DY01-SP09-DY01/lab2-1-5_cnhu_vqvae_DY01-SP09-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-5_cnhu_vqvae_DY01-SP07-DY01/lab2-1-5_cnhu_vqvae_DY01-SP07-DY01_282.wav" controls preload></audio> | <audio src="audio/lab2-1-5_cnhu_vqvae_DY01-SP13-DY01/lab2-1-5_cnhu_vqvae_DY01-SP13-DY01_282.wav" controls preload></audio> |
 
-|   Model   | transcription: 那個牆上掛著一幅油畫 (na ge qiang shang gua zhu yi fu you hua)|
-|:---------:|:-------------------------------------------------------------------:|
-| EL speech | <audio src="audio/el01/EL01_287.wav" controls preload></audio> |
-| MT-CLDNN  | <audio src="audio/el01_nl02/mtcldnn/EL01-NL02_MTCLDNN_h5_GV_no0th_287.wav" controls preload></audio> |
-|    TFS    | <audio src="audio/el01_nl02/tfs/EL01-NL02_TFS_287.wav" controls preload></audio> |
-|    PT     | <audio src="audio/el01_nl02/pt/EL01-NL02_PT_287.wav" controls preload></audio> |
-| NL speech | <audio src="audio/nl02/NL02_287.wav" controls preload></audio> |
+## Mel-spectrograms
 
+### Mel-spectrogram for dysarthric speech, normal speech, and VTN-converted/LLE-converted speech.
+
+![spec_1](figures/new_stage_1_fig.png)
+
+### Mel-spectrogram for VTN+VQVAE, VTN+Seed-VC, and LLE(with CH as content feature)+Seed-VC results. The spectrogram for normal speech is included as reference.
+
+![spec_2](figures/new_stage_2_fig.png)
 
 ## Reference
 
-[^first]: K.  Kobayashi  and  T.  Toda,  “Implementation of low-latency electrolaryngeal speech enhancement based onmulti-task  cldnn,”  inProceedings of 2020 28th EU-SIPCO, 2021, pp. 396–400.
+[^first]: Li, F.R., Hwang, H.T., Yen, M.C., Lo, M.T., Tsao, Y., Wang, H.M.: Improving exemplar-based electrolaryngeal speech voice conversion via robust content representations. In: Proc. APSIPA (2025)
+[^second]: Huang, W.C., Hayashi, T., Wu, Y.C., Kameoka, H., Toda, T.: Voice transformer network: Sequence-to-sequence voice conversion using transformer with text-to-speech pretraining. In: Proc. Interspeech. pp. 4676–4680 (2020)
+[^third]: Seed-VC GitHub: https://github.com/Plachtaa/seed-vc
+[^fourth]: FreeVC GitHub: https://github.com/OlaWod/FreeVC
+[^fifth]: SPARC GitHub: https://github.com/Berkeley-Speech-Group/Speech-Articulatory-Coding
+[^sixth]: MKL-VC GitHub: https://github.com/alobashev/mkl-vc
+[^seventh]: Crank GitHub: https://github.com/k2kobayashi/crank
+
+
 
